@@ -1,0 +1,47 @@
+############################### PYTHON VIRTUAL ENVIRONMENT ##########################
+
+# 1. Loading Module
+module load gnu10
+module load python
+
+# 2. Creating & Activating Python Virtual Environments
+python -m venv workshop-env
+
+# 3. Activate the environment
+source workshop-env/bin/activate
+
+# 4. Installing ipykernel Package
+pip install ipykernel
+
+# 5. Adding Python Virtual Environment To Jupyter Kernel
+
+python -m ipykernel install --user --name=workshop-kernel --display-name "Python (workshop-env)"
+
+
+################################# MINIFORGE ###################################
+
+# 1. Download Miniforge
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+
+# 2. Install Miniforge in batch mode (-b) to the specified path (-p)
+bash Miniforge3-Linux-x86_64.sh -b -p "$HOME/miniforge"
+
+# 3. Source the base Miniforge environment
+source "$HOME/miniforge/bin/activate"
+
+# 4. Create the PyTorch environment
+conda create --name torch-env pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia -y
+
+# 5. Activate the new environment (using source for shell script compatibility)
+source "$HOME/miniforge/bin/activate" torch-env
+
+# 6. Install line_profiler
+conda install line_profiler --channel conda-forge -y
+
+# 7. Cleanup the installer (Optional, but good practice)
+rm Miniforge3-Linux-x86_64.sh
+
+
+############################# PROFILING ###############################3
+
+python -m line_profiler -rmt "<FILE-NAME>.lprof"
